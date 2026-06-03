@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-function MatiereRow({ matiere }) {
+function MatiereRow({ matiere, onEdit }) {
   // 1. Icône basée directement sur le statut physique du morceau réel
   const renderStatusIcon = (statut) => {
     switch (statut) {
-      case 'Neuf':
+      case "Neuf":
         return <div className="status-icon icon-ok">✔️</div>;
-      case 'Entamé':
+      case "Entamé":
         return <div className="status-icon icon-fin">⏳</div>;
-      case 'Chute':
+      case "Chute":
         return <div className="status-icon icon-alerte">⚠️</div>;
       default:
         return <div className="status-icon icon-rupture">❌</div>;
@@ -18,10 +18,14 @@ function MatiereRow({ matiere }) {
   // 2. Couleur du badge en fonction du statut (Neuf = vert, Entamé = bleu/orange, Chute = rouge)
   const getBadgeClass = (statut) => {
     switch (statut) {
-      case 'Neuf': return 'badge-ok';
-      case 'Entamé': return 'badge-fin'; // classe à adapter ou utiliser badge-alerte
-      case 'Chute': return 'badge-chute';
-      default: return 'badge-rupture';
+      case "Neuf":
+        return "badge-ok";
+      case "Entamé":
+        return "badge-fin"; // classe à adapter ou utiliser badge-alerte
+      case "Chute":
+        return "badge-chute";
+      default:
+        return "badge-rupture";
     }
   };
 
@@ -43,15 +47,29 @@ function MatiereRow({ matiere }) {
 
       {/* Dimensions spécifiques de CE morceau précis */}
       <div className="col-dimensions">
-        {matiere.type_forme === 'Méplat' || matiere.type_forme === 'Bloc' || matiere.type_forme === 'Carré' || matiere.type_forme === 'Prisme' ? (
+        {matiere.type_forme === "Méplat" ||
+        matiere.type_forme === "Bloc" ||
+        matiere.type_forme === "Carré" ||
+        matiere.type_forme === "Prisme" ? (
           <>
-            <div><strong>Dimensions :</strong> {matiere.d_x || 0} x {matiere.d_y || 0} mm</div>
-            <div><strong>Longueur :</strong> {matiere.longueur} mm</div>
+            <div>
+              <strong>Dimensions :</strong> {matiere.d_x || 0} x{" "}
+              {matiere.d_y || 0} mm
+            </div>
+            <div>
+              <strong>Longueur :</strong> {matiere.longueur} mm
+            </div>
           </>
         ) : (
           <>
-            <div><strong>Longueur :</strong> {matiere.longueur} mm</div>
-            {matiere.diametre && <div><strong>Diamètre :</strong> Ø {matiere.diametre} mm</div>}
+            <div>
+              <strong>Longueur :</strong> {matiere.longueur} mm
+            </div>
+            {matiere.diametre && (
+              <div>
+                <strong>Diamètre :</strong> Ø {matiere.diametre} mm
+              </div>
+            )}
           </>
         )}
       </div>
@@ -65,7 +83,13 @@ function MatiereRow({ matiere }) {
 
       {/* Bouton d'action (Crayon d'édition) */}
       <div className="col-action">
-        <button className="btn-edit" title="Modifier ce morceau précis">📝</button>
+        <button
+          className="btn-edit"
+          title="Modifier ce morceau précis"
+          onClick={() => onEdit && onEdit(matiere)}
+        >
+          📝
+        </button>
       </div>
     </div>
   );

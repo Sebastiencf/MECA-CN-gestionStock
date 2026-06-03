@@ -4,6 +4,14 @@ header("Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=UTF-8");
 
+
+
+error_log("=== API CHARGÉE - " . date('H:i:s') . " ===");
+
+
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
@@ -23,6 +31,12 @@ if ($method === 'GET') {
 
 try {
     switch ($action) {
+
+    if ($action === 'ping') {
+        echo json_encode(['pong' => true, 'action_reçue' => $action]);
+        exit();
+    }
+
 
         case null:
         case 'get_stock':
@@ -98,6 +112,44 @@ try {
             ");
             $results = $stmt->fetchAll();
             echo json_encode($results ?: []);
+            break;
+
+        case 'add':
+            $nom = trim($body['nom'] ?? '');
+            $identifiant = trim($body['identifiant'] ?? '');
+            $forme = trim($body['forme'] ?? '');
+            $autreForme = trim($body['autreFormeRecherche'] ?? '');
+            $longueur = ($body['longueur'] !== '' && $body['longueur'] !== null) ? floatval($body['longueur']) : 0;
+            $diametre = $body['diametre'] !== '' && $body['diametre'] !== null ? floatval($body['diametre']) : null;
+            $dimensionX = $body['dimensionX'] !== '' && $body['dimensionX'] !== null ? floatval($body['dimensionX']) : null;
+            $dimensionY = $body['dimensionY'] !== '' && $body['dimensionY'] !== null ? floatval($body['dimensionY']) : null;
+            $seuilAlerte = $body['seuilAlerte'] !== '' && $body['seuilAlerte'] !== null ? floatval($body['seuilAlerte']) : null;
+            $etat = trim($body['etat'] ?? '');
+
+            if (empty($nom) || empty($identifiant) || empty($forme) || empty($etat) || $seuilAlerte === null) {
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => 'Champs obligatoires manquants']);
+                break;
+            }
+
+            $typeForme = $forme === 'Autre' ? $autreForme : $forme;
+
+            // 1. Insérer la matière
+            $stmt = $pdo->prepare("
+                INSERT INTO matieres (nom, code, type_forme, seuil_alerte_longueur)
+                VALUES (?, ?, ?, ?)
+            ");
+            $stmt->execute([$nom, $identifiant, $typeForme, $seuilAlerte]);
+            $matiereId = $pdo->lastInsertId();
+
+            // 2. Insérer le stock unitaire associé
+            $stmt = $pdo->prepare("
+                INSERT INTO stock_unitaire (matiere_id, longueur, diametre, d_x, d_y, statut)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([$matiereId, $longueur, $diametre, $dimensionX, $dimensionY, $etat]);
+
+            echo json_encode(['success' => true, 'matiere_id' => $matiereId]);
             break;
 
         default:

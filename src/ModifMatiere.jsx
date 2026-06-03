@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function AddMatiere() {
+function ModifMatiere({ matiere }) {
   const [formData, setFormData] = useState({
     nom: "",
     identifiant: "",
@@ -15,6 +15,24 @@ function AddMatiere() {
   });
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  // Initialiser le formulaire avec les données de la matière
+  useEffect(() => {
+    if (matiere) {
+      setFormData({
+        nom: matiere.nom || "",
+        identifiant: matiere.identifiant || "",
+        forme: matiere.type_forme || "",
+        autreFormeRecherche: "",
+        longueur: matiere.longueur || "",
+        diametre: matiere.diametre || "",
+        dimensionX: matiere.d_x || "",
+        dimensionY: matiere.d_y || "",
+        seuilAlerte: "",
+        etat: matiere.statut || "",
+      });
+    }
+  }, [matiere]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +56,8 @@ function AddMatiere() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            action: "add",
+            action: "update",
+            stock_id: matiere?.stock_id,
             ...formData,
           }),
         },
@@ -46,27 +65,13 @@ function AddMatiere() {
 
       const data = await response.json();
 
-      console.log("Réponse API :", data);
-      console.log("Status HTTP :", response.status);
-
       if (data.success) {
-        setMessage("✅ Matière ajoutée avec succès !");
-        setFormData({
-          nom: "",
-          identifiant: "",
-          forme: "",
-          autreFormeRecherche: "",
-          longueur: "",
-          diametre: "",
-          dimensionX: "",
-          dimensionY: "",
-          seuilAlerte: "",
-          etat: "",
-        });
+        setMessage("✅ Matière modifiée avec succès !");
         setTimeout(() => setMessage(""), 3000);
       } else {
         setMessage(
-          "❌ Erreur : " + (data.message || "Impossible d'ajouter la matière"),
+          "❌ Erreur : " +
+            (data.message || "Impossible de modifier la matière"),
         );
       }
     } catch (error) {
@@ -76,13 +81,24 @@ function AddMatiere() {
     }
   };
 
+  if (!matiere) {
+    return (
+      <main className="dashboard-main">
+        <div className="dashboard-header">
+          <h2 className="main-title">Erreur</h2>
+          <p className="main-subtitle">Aucune matière sélectionnée</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="dashboard-main add-matiere-container">
       <div className="dashboard-header">
         <div>
-          <h2 className="main-title">Ajout de matière</h2>
+          <h2 className="main-title">Modifier une matière</h2>
           <p className="main-subtitle">
-            Veuillez renseigner les informations demandées ci-dessous
+            Modifiez les informations de la matière sélectionnée
           </p>
         </div>
       </div>
@@ -257,9 +273,7 @@ function AddMatiere() {
                     <option value="">-- Sélectionner --</option>
                     <option value="Neuf">Neuf</option>
                     <option value="Entamé">Entamé</option>
-                    <option value="Stock faible">Stock faible</option>
                     <option value="Chute">Chute</option>
-                    <option value="Hors stock">Hors stock</option>
                   </select>
                 </div>
               </div>
@@ -274,7 +288,7 @@ function AddMatiere() {
             )}
 
             <button type="submit" disabled={isLoading} className="btn-valider">
-              {isLoading ? "Ajout en cours..." : "Valider"}
+              {isLoading ? "Modification en cours..." : "Valider"}
             </button>
           </form>
         </div>
@@ -353,4 +367,4 @@ function AddMatiere() {
   );
 }
 
-export default AddMatiere;
+export default ModifMatiere;

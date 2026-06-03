@@ -1,25 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import MatiereRow from './MatiereRow';
+import React, { useState, useEffect } from "react";
+import MatiereRow from "./MatiereRow";
 
-function Dashboard() {
+function Dashboard({ onNavigate }) {
   const [matieres, setMatieres] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Connexion à ton API PHP locale développée sur Wamp
-    fetch('http://localhost/gestion-des-stocks/api_stock.php')
-      .then(res => res.json())
-      .then(data => {
+    fetch("http://localhost/gestion-des-stocks/api_stock.php")
+      .then((res) => res.json())
+      .then((data) => {
         setMatieres(data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Erreur API:", err);
         setLoading(false);
       });
   }, []);
 
-  if (loading) return <div className="loading">Chargement de l'inventaire...</div>;
+  const handleEdit = (matiere) => {
+    // Passer les données de la matière et naviguer vers la page de modification
+    onNavigate && onNavigate("modify", matiere);
+  };
+
+  if (loading)
+    return <div className="loading">Chargement de l'inventaire...</div>;
 
   return (
     <main className="dashboard-main">
@@ -29,11 +35,15 @@ function Dashboard() {
           <h2 className="main-title">Matières disponibles</h2>
           <p className="main-subtitle">Inventaire en temps réel</p>
         </div>
-        
+
         {/* Barre de recherche */}
         <div className="search-container">
           <span className="search-icon">🔍</span>
-          <input type="text" placeholder="Rechercher une matière..." className="search-input" />
+          <input
+            type="text"
+            placeholder="Rechercher une matière..."
+            className="search-input"
+          />
         </div>
       </div>
 
@@ -48,12 +58,12 @@ function Dashboard() {
       </div>
 
       {/* Liste des lignes de matières */}
-        <div className="rows-list">
-        {matieres.map(mat => (
-            // On utilise mat.stock_id car il est 100% unique pour chaque ligne physique
-            <MatiereRow key={mat.stock_id} matiere={mat} />
+      <div className="rows-list">
+        {matieres.map((mat) => (
+          // On utilise mat.stock_id car il est 100% unique pour chaque ligne physique
+          <MatiereRow key={mat.stock_id} matiere={mat} onEdit={handleEdit} />
         ))}
-        </div>
+      </div>
     </main>
   );
 }
