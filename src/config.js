@@ -1,0 +1,1 @@
+export const API_URL = "http://localhost/MECA-CN-gestionStock/api_stock.php";

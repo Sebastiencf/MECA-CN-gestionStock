@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_URL } from "./config";
 
 function ModifMatiere({ matiere }) {
   const [formData, setFormData] = useState({
@@ -49,7 +50,7 @@ function ModifMatiere({ matiere }) {
 
     try {
       const response = await fetch(
-        "http://localhost/gestion-des-stocks/api_stock.php",
+        "http://localhost/MECA-CN-gestionStock/api_stock.php",
         {
           method: "POST",
           headers: {

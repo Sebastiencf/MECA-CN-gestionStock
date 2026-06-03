@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_URL } from "./config";
 
 function HistoryMenu({ isOpen, onClose, onViewAll }) {
   const [history, setHistory] = useState([]);
@@ -14,7 +15,7 @@ function HistoryMenu({ isOpen, onClose, onViewAll }) {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost/gestion-des-stocks/api_stock.php?action=get_history",
+        "http://localhost/MECA-CN-gestionStock/api_stock.php?action=get_history",
       );
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`);

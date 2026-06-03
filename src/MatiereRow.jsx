@@ -1,4 +1,5 @@
 import React from "react";
+import { API_URL } from "./config";
 
 function MatiereRow({ matiere, onEdit }) {
   // 1. Icône basée directement sur le statut physique du morceau réel

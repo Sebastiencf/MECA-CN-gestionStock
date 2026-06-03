@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_URL } from "./config";
 
 function CollaboratorsMenu({ isOpen, onClose }) {
   const [users, setUsers] = useState([]);
@@ -19,7 +20,7 @@ function CollaboratorsMenu({ isOpen, onClose }) {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        "http://localhost/gestion-des-stocks/api_stock.php?action=get_users",
+        "http://localhost/MECA-CN-gestionStock/api_stock.php?action=get_users",
       );
       const data = await response.json();
       setUsers(data || []);
@@ -45,7 +46,7 @@ function CollaboratorsMenu({ isOpen, onClose }) {
 
     try {
       const response = await fetch(
-        "http://localhost/gestion-des-stocks/api_stock.php",
+        "http://localhost/MECA-CN-gestionStock/api_stock.php",
         {
           method: "POST",
           headers: {
@@ -80,7 +81,7 @@ function CollaboratorsMenu({ isOpen, onClose }) {
 
     try {
       const response = await fetch(
-        "http://localhost/gestion-des-stocks/api_stock.php",
+        "http://localhost/MECA-CN-gestionStock/api_stock.php",
         {
           method: "DELETE",
           headers: {

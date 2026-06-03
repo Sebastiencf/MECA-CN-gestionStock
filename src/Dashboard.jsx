@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MatiereRow from "./MatiereRow";
+import { API_URL } from "./config";
 
 function Dashboard({ onNavigate }) {
   const [matieres, setMatieres] = useState([]);
@@ -7,7 +8,7 @@ function Dashboard({ onNavigate }) {
 
   useEffect(() => {
     // Connexion à ton API PHP locale développée sur Wamp
-    fetch("http://localhost/gestion-des-stocks/api_stock.php")
+    fetch("http://localhost/MECA-CN-gestionStock/api_stock.php")
       .then((res) => res.json())
       .then((data) => {
         setMatieres(data);

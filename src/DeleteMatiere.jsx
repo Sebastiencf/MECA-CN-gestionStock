@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { API_URL } from "./config";
 
 function DeleteMatiere() {
   const [matieres, setMatieres] = useState([]);
@@ -8,7 +9,7 @@ function DeleteMatiere() {
 
   useEffect(() => {
     // Charger la liste des matières
-    fetch("http://localhost/gestion-des-stocks/api_stock.php")
+    fetch(API_URL)
       .then((res) => res.json())
       .then((data) => {
         setMatieres(data);
@@ -30,7 +31,7 @@ function DeleteMatiere() {
 
     try {
       const response = await fetch(
-        "http://localhost/gestion-des-stocks/api_stock.php",
+        "http://localhost/MECA-CN-gestionStock/api_stock.php",
         {
           method: "DELETE",
           headers: {

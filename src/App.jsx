@@ -9,6 +9,7 @@ import FluxManagement from "./FluxManagement";
 import CollaboratorsMenu from "./CollaboratorsMenu";
 import HistoryMenu from "./HistoryMenu";
 import "./App.css";
+import { API_URL } from "./config";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("home");
