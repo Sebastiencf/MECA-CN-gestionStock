@@ -39,7 +39,7 @@ function Dashboard({ onNavigate }) {
 
         {/* Barre de recherche */}
         <div className="search-container">
-          <span className="search-icon"><img src="/icons/loupe_light.png" alt="Barre dde recherche" class="loupe-icon"/></span>
+          <span className="search-icon"><img src="/icons/loupe_light.png" alt="Barre dde recherche" className="loupe-icon"/></span>
           <input
             type="text"
             placeholder="Rechercher une matière..."

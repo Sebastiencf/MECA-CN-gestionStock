@@ -153,6 +153,40 @@ const fetchFlux = async () => {
   const uniqueOrigins = [...new Set(flux.map((item) => item.user))];
   const uniqueActions = [...new Set(flux.map((item) => item.action))];
 
+
+
+  
+  const handleCancel = async (item) => {
+    const confirmMsg = `Annuler cette action ?\n"${item.action} – ${item.matiere_nom} (${item.valeur_modification > 0 ? '+' : ''}${item.valeur_modification} mm)"\n\nL'opération inverse sera appliquée automatiquement.`;
+    if (!window.confirm(confirmMsg)) return;
+
+    try {
+      const response = await fetch(
+        "http://localhost/MECA-CN-gestionStock/api_stock.php?action=cancel_history",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: item.id }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("Action annulée avec succès.");
+        fetchFlux(); // Recharge la liste
+      } else {
+        alert("Erreur : " + (data.message || "Impossible d'annuler."));
+      }
+    } catch (err) {
+      console.error("Erreur annulation :", err);
+      alert("Erreur réseau lors de l'annulation.");
+    }
+  };
+
+
+
+
   //console.log("filteredFlux:", filteredFlux.length, filteredFlux.map(i => i.action));
 
   if (loading) {
@@ -190,7 +224,7 @@ const fetchFlux = async () => {
           </p>
         </div>
         <button className="btn-export-csv" onClick={exportToCSV}>
-          ⬇️ Exporter CSV
+          <img src="/icons/download.png" alt="Icone d'export en CSV" className="upload-icon"/> Exporter CSV
         </button>
       </div>
 
@@ -306,7 +340,7 @@ const fetchFlux = async () => {
 
                 <div className="col-details">
                   <div className="detail-text">
-                    <strong>{item.matiere_nom || "-"}</strong>
+                    <strong>{item.matiere_nom || "-"} {item.code || "-"}</strong>
                     <br />
                     <small>{item.type_forme || "-"}</small>
                   </div>
@@ -319,8 +353,12 @@ const fetchFlux = async () => {
                 </div>
 
                 <div className="col-actions">
-                  <button className="btn-action" title="Voir détails">
-                    ➜
+                  <button
+                    className="btn-action btn-cancel"
+                    title="Annuler cette action"
+                    onClick={() => handleCancel(item)}
+                  >
+                    ↩ Annuler
                   </button>
                 </div>
               </div>

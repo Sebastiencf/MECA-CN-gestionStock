@@ -1047,6 +1047,8 @@ html {
 
 .view-all-link:hover {
   opacity: 0.8;
+  cursor:pointer;
+  text-decoration:underline;
 }
 
 .history-timeline {
@@ -1406,16 +1408,20 @@ html {
 .col-actions {
   display: flex;
   justify-content: center;
+  background-color: #D95F00;
+  border-radius:5px;
 }
 
 .btn-action {
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: 10px;
   cursor: pointer;
   opacity: 0.6;
   transition: opacity 0.3s;
   padding: 4px 8px;
+  min-width:75px;
+  min-height:25px
 }
 
 .btn-action:hover {

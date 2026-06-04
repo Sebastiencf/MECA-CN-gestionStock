@@ -26,7 +26,6 @@ function MatiereRow({ matiere, onEdit }) {
       case "Chute":
         return "badge-chute";
 
-
       
       case "Déstruction":
         return "badge-destruction";

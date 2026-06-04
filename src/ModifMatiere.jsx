@@ -104,6 +104,7 @@ function ModifMatiere({ matiere }) {
         </div>
       </div>
 
+
       <div className="add-matiere-layout">
         {/* Formulaire à gauche */}
         <div className="form-section">
