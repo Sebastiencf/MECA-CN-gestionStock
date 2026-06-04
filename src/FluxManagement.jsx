@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { API_URL } from "./config";
 
 function FluxManagement() {
@@ -8,10 +8,17 @@ function FluxManagement() {
   const [filterAction, setFilterAction] = useState("Tous");
   const [filterOrigin, setFilterOrigin] = useState("Tous les collaborateurs");
   const [filterPeriod, setFilterPeriod] = useState("Derniers 30 jours");
+  const tableBodyRef = useRef(null);
 
   useEffect(() => {
     fetchFlux();
   }, []);
+
+  useEffect(() => {
+    if (tableBodyRef.current) {
+      tableBodyRef.current.scrollTop = 0;
+    }
+  }, [filterPeriod, filterAction, filterOrigin, searchTerm]);
 
 const fetchFlux = async () => {
   try {
@@ -23,7 +30,7 @@ const fetchFlux = async () => {
     }
     const data = await response.json();
     setFlux(data || []);
-    console.log("Total reçu:", data.length); // ← ici, après setFlux
+    // console.log("Total reçu:", data.length);
     setLoading(false);
   } catch (error) {
     console.error("Erreur API:", error);
@@ -58,6 +65,25 @@ const fetchFlux = async () => {
     }
   };
 
+  const formatQuantity = (action, value) => {
+    if (value == null) return "-";
+
+    const absValue = Math.abs(value);
+
+    if (action === "Ajout") {
+      return `+${absValue} mm`;
+    }
+
+    if (action === "Suppression" || action === "Mise au rebut") {
+      return `-${absValue} mm`;
+    }
+
+    return `${value} mm`;
+  };
+
+  //console.log("filterPeriod actuel:", filterPeriod);
+
+
   const filteredFlux = flux.filter((item) => {
     try {
       const matchSearch =
@@ -73,7 +99,24 @@ const fetchFlux = async () => {
         filterOrigin === "Tous les collaborateurs" ||
         item.user === filterOrigin;
 
-      return matchSearch && matchAction && matchOrigin;
+      let matchPeriod = true;
+      if (filterPeriod === "Derniers 30 jours" && item.date) {
+        
+        const isoDateString = item.date.replace(" ", "T");
+        const itemDate = new Date(isoDateString);
+        
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 30);
+
+        // Sécurité : on vérifie que la date est valide avant de comparer
+        if (!isNaN(itemDate.getTime())) {
+          matchPeriod = itemDate >= cutoff;
+        } else {
+          matchPeriod = false; 
+        }
+      }
+
+      return matchSearch && matchAction && matchOrigin && matchPeriod;
     } catch (err) {
       console.error("Erreur lors du filtrage:", item, err);
       return false;
@@ -110,7 +153,7 @@ const fetchFlux = async () => {
   const uniqueOrigins = [...new Set(flux.map((item) => item.user))];
   const uniqueActions = [...new Set(flux.map((item) => item.action))];
 
-  console.log("filteredFlux:", filteredFlux.length, filteredFlux.map(i => i.action));
+  //console.log("filteredFlux:", filteredFlux.length, filteredFlux.map(i => i.action));
 
   if (loading) {
     return (
@@ -134,6 +177,8 @@ const fetchFlux = async () => {
     );
   }
 
+
+  console.log("Nb items affichés:", filteredFlux.length, "| filterPeriod:", filterPeriod);
   return (
     <main className="dashboard-main flux-management">
       {/* Header */}
@@ -155,7 +200,11 @@ const fetchFlux = async () => {
           <span className="filter-label">FILTRE</span>
           <div className="filter-group">
             <label className="checkbox-label">
-              <input type="checkbox" defaultChecked />
+              <input 
+                type="checkbox" 
+                checked={filterPeriod === "Derniers 30 jours"}
+                onChange={(e) => setFilterPeriod(e.target.checked ? "Derniers 30 jours" : "Tous")}
+              />
               Derniers 30 jours
             </label>
           </div>
@@ -214,7 +263,7 @@ const fetchFlux = async () => {
         </div>
 
         {/* Table Rows */}
-        <div className="table-body">
+        <div className="table-body" ref={tableBodyRef}>
           {filteredFlux.length === 0 ? (
             <div className="no-flux">
               Aucun flux correspondant à vos critères
@@ -233,7 +282,17 @@ const fetchFlux = async () => {
                   </div>
                   <div className="user-info">
                     <div className="user-name">{item.user || "Système"}</div>
-                    <div className="user-date">{item.date || "-"}</div>
+                    <div className="user-date">
+                      {item.date 
+                        ? new Date(item.date.replace(" ", "T")).toLocaleDateString("fr-FR", {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          })
+                        : "-"}
+                    </div>
                   </div>
                 </div>
 
@@ -254,11 +313,9 @@ const fetchFlux = async () => {
                 </div>
 
                 <div className="col-quantity">
-                  <div className="quantity-value">
-                    {item.valeur_modification
-                      ? `${Math.abs(item.valeur_modification)}m`
-                      : "-"}
-                  </div>
+                      <div className="quantity-value">
+                        {formatQuantity(item.action, item.valeur_modification)}
+                      </div>
                 </div>
 
                 <div className="col-actions">

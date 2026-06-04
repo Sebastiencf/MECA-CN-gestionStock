@@ -90,7 +90,7 @@ try {
                     h.valeur_modification,
                     m.nom AS matiere_nom,
                     m.type_forme,
-                    DATE_FORMAT(h.date_action, '%d/%m/%Y %H:%i') AS date
+                    h.date_action AS date
                 FROM historique_stock h
                 LEFT JOIN matieres m ON h.matiere_id = m.id
                 LEFT JOIN utilisateurs u ON CAST(h.origine AS UNSIGNED) = u.id
