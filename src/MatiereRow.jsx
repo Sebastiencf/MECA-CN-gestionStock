@@ -2,7 +2,7 @@ import React from "react";
 import { API_URL } from "./config";
 
 function MatiereRow({ matiere, onEdit }) {
-  // 1. Icône basée directement sur le statut physique du morceau réel
+  //  Icône basée directement sur le statut physique du morceau réel
   const renderStatusIcon = (statut) => {
     switch (statut) {
       case "Neuf":
@@ -16,18 +16,18 @@ function MatiereRow({ matiere, onEdit }) {
     }
   };
 
-  // 2. Couleur du badge en fonction du statut (Neuf = vert, Entamé = bleu/orange, Chute = rouge)
+  // 2. Couleur du badge en fonction du statut (Neuf = vert, Entame = bleu/orange, Chute = rouge)
   const getBadgeClass = (statut) => {
     switch (statut) {
       case "Neuf":
         return "badge-ok";
       case "Entamé":
-        return "badge-fin"; // classe à adapter ou utiliser badge-alerte
+        return "badge-fin";
       case "Chute":
         return "badge-chute";
 
 
-      // troll
+      
       case "Déstruction":
         return "badge-destruction";
       case "Obstruction de la vue inerte de la matière subliminale accompagnant la chute miséricordiale de la matière dans les abysses de la destruction" : 
@@ -56,7 +56,7 @@ function MatiereRow({ matiere, onEdit }) {
       {/* Icône d'état graphique (Neuf, Entamé, Chute) */}
       {renderStatusIcon(matiere.statut)}
 
-      {/* Nom complet de la nuance de matière */}
+      {/* Nom complet de la matière */}
       <div className="col-info">
         <h4 className="matiere-title">{matiere.nom} {matiere.code}</h4>
         <span className="matiere-sub">ID Morceau : #{matiere.stock_id}</span>
@@ -96,14 +96,14 @@ function MatiereRow({ matiere, onEdit }) {
         )}
       </div>
 
-      {/* Statut réel extrait du dump SQL */}
+      {/* Statut de la matière (Neuf, Entamé, ...) */}
       <div className="col-badge">
         <span className={`stock-badge ${getBadgeClass(matiere.statut)}`}>
           {matiere.statut}
         </span>
       </div>
 
-      {/* Bouton d'action (Crayon d'édition) */}
+      {/* Bouton d'accès à la page de modification de la matière correspondante*/}
       <div className="col-action">
         <button
           className="btn-edit"

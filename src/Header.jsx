@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 function Header({ onOpenCollaborators, onOpenHistory }) {
   const [date, setDate] = useState(new Date());
 
-  // Petite fonction bonus pour afficher l'heure en direct dans l'atelier/bureau
+  // Fonction bonus pour ajouter l'heure en direct sur le bureau (cette fonctionnalité n'est plus sur le site en lui-même, mais la fonction a été laissée au cas où un retard de cette dernière est prévu)
   useEffect(() => {
     const timer = setInterval(() => setDate(new Date()), 1000);
     return () => clearInterval(timer);
@@ -11,7 +11,7 @@ function Header({ onOpenCollaborators, onOpenHistory }) {
 
   return (
     <header className="app-header">
-      {/* Élément Droite : Boutons et Info contextuelle */}
+      {/* Élément Droite : Boutons et Infos contextuelle */}
       <div className="header-actions">
         <button
           className="header-btn collaborators-btn"

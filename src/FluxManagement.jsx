@@ -30,7 +30,7 @@ const fetchFlux = async () => {
     }
     const data = await response.json();
     setFlux(data || []);
-    // console.log("Total reçu:", data.length);
+    // console.log("Total reçu : ", data.length);
     setLoading(false);
   } catch (error) {
     console.error("Erreur API:", error);
@@ -242,7 +242,7 @@ const fetchFlux = async () => {
         </div>
       </div>
 
-      {/* Search */}
+      {/* Barre de recherche (cherche sur à peu près tout les éléments, sauf les quantité) */}
       <div className="flux-search">
         <input
           type="text"
@@ -253,7 +253,7 @@ const fetchFlux = async () => {
         />
       </div>
 
-      {/* Table Headers */}
+      {/* Headers de la table */}
       <div className="flux-table">
         <div className="table-header">
           <div className="col-user">UTILISATEUR ET DATE</div>
@@ -262,7 +262,7 @@ const fetchFlux = async () => {
           <div className="col-quantity">QUANTITÉ</div>
         </div>
 
-        {/* Table Rows */}
+        {/* Lignes de la table */}
         <div className="table-body" ref={tableBodyRef}>
           {filteredFlux.length === 0 ? (
             <div className="no-flux">

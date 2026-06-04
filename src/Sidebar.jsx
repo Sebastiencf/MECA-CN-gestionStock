@@ -14,14 +14,14 @@ function Sidebar({ onNavigate, currentPage }) {
         </div>
 
         
-      {/* Liens de navigation du menu */}
+      {/* Liens de navigation vers les pages d'ajout, de suppression, et de listing de toutes les matières */}
       <nav className="sidebar-menu">
         <a 
           href="#" 
           onClick={(e) => { e.preventDefault(); onNavigate('home'); }} 
           className={`menu-item ${currentPage === 'home' ? 'active' : ''}`}
         >
-          <span className="icon">📋</span> Liste des matières
+          <span className="icon"><img src="/icons/listing.png" alt="Acès listing des matières" className="list-icon"/></span> Liste des matières
         </a>
         <a 
           href="#" 

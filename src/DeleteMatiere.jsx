@@ -80,7 +80,7 @@ function DeleteMatiere() {
           <p className="main-subtitle">Retirer un matériau de l'inventaire</p>
         </div>
         <div className="search-container">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon"><img src="/icons/loupe_light.png" alt="Barre dde recherche" class="loupe-icon"/></span>
           <input type="text" placeholder="Rechercher une matière..." className="search-input" />
         </div>
       </div>
@@ -109,13 +109,13 @@ function DeleteMatiere() {
             {matieres.map((matiere) => (
               <div key={matiere.stock_id} className="delete-item">
 
-                {/* Colonne 1 : icône statut — identique à MatiereRow */}
+                {/* première colonne : icône statut — identique à MatiereRow */}
                 {matiere.statut === "Neuf"    && <div className="status-icon icon-ok">✔️</div>}
                 {matiere.statut === "Entamé"  && <div className="status-icon icon-fin">⏳</div>}
                 {matiere.statut === "Chute"   && <div className="status-icon icon-alerte">⚠️</div>}
                 {!["Neuf","Entamé","Chute"].includes(matiere.statut) && <div className="status-icon icon-rupture">❌</div>}
 
-                {/* Colonnes 2–5 regroupées dans delete-item-info */}
+                {/* Colonnes 2 à 5 regroupées dans delete-item-info */}
                 <div className="delete-item-info">
 
                   {/* Nom */}
@@ -154,7 +154,7 @@ function DeleteMatiere() {
                   </div>
                 </div>
 
-                {/* Colonne 6 : bouton suppression */}
+                {/* 6ème colonne : bouton suppression */}
                 <button
                   className="btn-delete"
                   onClick={() => handleDelete(matiere.stock_id)}

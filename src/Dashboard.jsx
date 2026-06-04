@@ -7,7 +7,7 @@ function Dashboard({ onNavigate }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Connexion à ton API PHP locale développée sur Wamp
+    // Connexion l'API PHP locale développée sur Wamp
     fetch("http://localhost/MECA-CN-gestionStock/api_stock.php")
       .then((res) => res.json())
       .then((data) => {
@@ -39,7 +39,7 @@ function Dashboard({ onNavigate }) {
 
         {/* Barre de recherche */}
         <div className="search-container">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon"><img src="/icons/loupe_light.png" alt="Barre dde recherche" class="loupe-icon"/></span>
           <input
             type="text"
             placeholder="Rechercher une matière..."
@@ -61,7 +61,7 @@ function Dashboard({ onNavigate }) {
       {/* Liste des lignes de matières */}
       <div className="rows-list">
         {matieres.map((mat) => (
-          // On utilise mat.stock_id car il est 100% unique pour chaque ligne physique
+          // mat.stock_id = identifiant 100% unique pour chaque matière, contrairement à mat.id
           <MatiereRow key={mat.stock_id} matiere={mat} onEdit={handleEdit} />
         ))}
       </div>

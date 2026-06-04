@@ -43,10 +43,10 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* 1. Bloc vertical Gauche */}
+      {/* Bloc vertical Gauche */}
       <Sidebar onNavigate={handleNavigate} currentPage={currentPage} />
 
-      {/* 2. Bloc de Droite (Header en haut + Contenu en dessous) */}
+      {/* Bloc de Droite (Header en haut + Contenu en dessous) */}
       <div className="main-wrapper">
         <Header
           onOpenCollaborators={() => setShowCollaborators(true)}
