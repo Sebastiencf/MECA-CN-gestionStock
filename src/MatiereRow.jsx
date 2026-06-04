@@ -25,8 +25,29 @@ function MatiereRow({ matiere, onEdit }) {
         return "badge-fin"; // classe à adapter ou utiliser badge-alerte
       case "Chute":
         return "badge-chute";
+
+
+      // troll
+      case "Déstruction":
+        return "badge-destruction";
+      case "Obstruction de la vue inerte de la matière subliminale accompagnant la chute miséricordiale de la matière dans les abysses de la destruction" : 
+        return "badge-obstruction";
+      case "Si tu te tapes la tête contre un vase, et que ça sonne creux, n'en déduis pas que c'est le vase qui est vide..." : 
+        return "cheh";
+      case "HEE HEE":
+        return "Mickael Jackson";
+      case " ":
+        return "You can't see me";
+      case "Quand le singe monte trop haut dans l'arbre, tout le monde voit son cul.":
+        return "Victor Hug-haut";
+      case "Celui qui pisse contre le vent apprend vite la géographie.":
+        return "À visiter...";
+
+
+      // si aucun de ceux avant ne fonctionne
       default:
         return "badge-rupture";
+
     }
   };
 
@@ -37,7 +58,7 @@ function MatiereRow({ matiere, onEdit }) {
 
       {/* Nom complet de la nuance de matière */}
       <div className="col-info">
-        <h4 className="matiere-title">{matiere.nom}</h4>
+        <h4 className="matiere-title">{matiere.nom} {matiere.code}</h4>
         <span className="matiere-sub">ID Morceau : #{matiere.stock_id}</span>
       </div>
 

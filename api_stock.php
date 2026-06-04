@@ -37,7 +37,8 @@ try {
                     s.d_x,
                     s.d_y,
                     s.diametre,
-                    s.statut
+                    s.statut,
+                    m.code
                 FROM stock_unitaire s
                 INNER JOIN matieres m ON s.matiere_id = m.id
                 ORDER BY m.nom ASC, s.longueur DESC
@@ -101,16 +102,16 @@ try {
             break;
 
         case 'add':
-            $nom         = trim($body['nom']                ?? '');
-            $code        = trim($body['identifiant']        ?? '');
-            $forme       = trim($body['forme']              ?? '');
-            $autreForme  = trim($body['autreFormeRecherche'] ?? '');
-            $longueur    = ($body['longueur']    !== '' && $body['longueur']    !== null) ? floatval($body['longueur'])    : 0;
-            $diametre    = ($body['diametre']    !== '' && $body['diametre']    !== null) ? floatval($body['diametre'])    : null;
-            $dimensionX  = ($body['dimensionX']  !== '' && $body['dimensionX']  !== null) ? floatval($body['dimensionX'])  : null;
-            $dimensionY  = ($body['dimensionY']  !== '' && $body['dimensionY']  !== null) ? floatval($body['dimensionY'])  : null;
+            $nom = trim($body['nom'] ?? '');
+            $code = trim($body['identifiant'] ?? '');
+            $forme = trim($body['forme'] ?? '');
+            $autreForme = trim($body['autreFormeRecherche'] ?? '');
+            $longueur = ($body['longueur'] !== '' && $body['longueur'] !== null) ? floatval($body['longueur']) : 0;
+            $diametre = ($body['diametre'] !== '' && $body['diametre'] !== null) ? floatval($body['diametre']) : null;
+            $dimensionX = ($body['dimensionX'] !== '' && $body['dimensionX'] !== null) ? floatval($body['dimensionX'])  : null;
+            $dimensionY = ($body['dimensionY'] !== '' && $body['dimensionY'] !== null) ? floatval($body['dimensionY'])  : null;
             $seuilAlerte = ($body['seuilAlerte'] !== '' && $body['seuilAlerte'] !== null) ? floatval($body['seuilAlerte']) : null;
-            $etat        = trim($body['etat'] ?? '');
+            $etat  = trim($body['etat'] ?? '');
 
             if (empty($nom) || empty($forme) || empty($etat) || $seuilAlerte === null) {
                 http_response_code(400);
@@ -136,6 +137,16 @@ try {
             $stmt->execute([$matiereId, $longueur, $diametre, $dimensionX, $dimensionY, $etat]);
 
             echo json_encode(['success' => true, 'matiere_id' => $matiereId]);
+            break;
+
+        case 'delete':
+            $id = intval($body['id'] ?? '');
+            $stmt = $pdo->prepare("
+                DELETE FROM stock_unitaire WHERE id = ?
+            ");
+            $stmt->execute([$id]);
+
+            echo json_encode(['success' => true]);
             break;
 
         default:

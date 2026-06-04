@@ -1063,6 +1063,20 @@ html {
   padding: 12px;
   border-radius: 6px;
   background-color: #f8f9fa;
+  width:90%;
+  max-width:90%;
+}
+
+.history-action.create{
+  border-left: 3px solid #22c55e;
+}
+
+.history-action.suppr{
+  border-left: 3px solid #ef4444;
+}
+
+.history-action.other{
+  border-left: 3px solid #868686;
 }
 
 .history-action.add {
@@ -1640,3 +1654,118 @@ html {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.no-matieres {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 40px 20px;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.delete-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Reprend exactement la même grille que .matiere-row */
+.delete-item {
+  display: grid;
+  grid-template-columns: 60px 1.5fr 1fr 1.5fr 1fr 60px;
+  align-items: center;
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.delete-item:hover {
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+  border-color: #fca5a5; /* légère teinte rouge au hover pour signaler l'action destructive */
+}
+
+/* La colonne info occupe les colonnes 2 à 5 de la grille */
+.delete-item-info {
+  grid-column: 2 / 6;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1fr; /* nom | type | dimensions | badge */
+  align-items: center;
+  gap: 12px;
+}
+
+.delete-item-info h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.delete-item-info .matiere-sub-id {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.delete-item-info .item-type {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.delete-item-info .item-dims {
+  font-size: 13px;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.delete-item-info .item-dims strong {
+  font-weight: 600;
+}
+
+/* Bouton poubelle — remplace btn-delete existant */
+.btn-delete {
+  all: unset; /* reset complet des anciens styles btn-delete */
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  justify-self: center;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+.btn-delete:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Message succès/erreur — reprend .message déjà défini, pas besoin de redéfinir */

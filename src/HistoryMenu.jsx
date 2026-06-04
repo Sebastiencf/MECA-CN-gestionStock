@@ -44,6 +44,10 @@ function HistoryMenu({ isOpen, onClose, onViewAll }) {
         return "consumption";
       case "Modification":
         return "modify";
+      case "Création":
+        return "create"
+      case "Suppression":
+        return "suppr"
       default:
         return "other";
     }
