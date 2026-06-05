@@ -502,7 +502,6 @@ L'interaction sur la tablette suit un parcours linéaire et sécurisé en 5 éta
 
 
 
-
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

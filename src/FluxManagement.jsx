@@ -150,10 +150,9 @@ const fetchFlux = async () => {
     a.click();
   };
 
+
   const uniqueOrigins = [...new Set(flux.map((item) => item.user))];
   const uniqueActions = [...new Set(flux.map((item) => item.action))];
-
-
 
   
   const handleCancel = async (item) => {
@@ -185,8 +184,6 @@ const fetchFlux = async () => {
   };
 
 
-
-
   //console.log("filteredFlux:", filteredFlux.length, filteredFlux.map(i => i.action));
 
   if (loading) {
@@ -212,7 +209,7 @@ const fetchFlux = async () => {
   }
 
 
-  console.log("Nb items affichés:", filteredFlux.length, "| filterPeriod:", filterPeriod);
+  // console.log("Nb items affichés:", filteredFlux.length, "| filterPeriod:", filterPeriod);
   return (
     <main className="dashboard-main flux-management">
       {/* Header */}

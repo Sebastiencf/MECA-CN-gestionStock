@@ -4,14 +4,18 @@ function Sidebar({ onNavigate, currentPage }) {
   return (
     <aside className="sidebar">
 
-
-        <div className="header-logo">
-            <img 
-                src="/logo/FullWhiteOnBlack.svg" 
-                alt="MECA-CN Logo" 
-                className="logo-img"
-            />
-        </div>
+        <a 
+        href="#"
+        onClick={(e) => {e.preventDefault(); onNavigate("home");}}
+        >
+          <div className="header-logo">
+              <img 
+                  src="/logo/FullWhiteOnBlack.svg" 
+                  alt="MECA-CN Logo" 
+                  className="logo-img"
+              />
+          </div>
+        </a>
 
         
       {/* Liens de navigation vers les pages d'ajout, de suppression, et de listing de toutes les matières */}
